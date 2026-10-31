@@ -1,0 +1,936 @@
+"""Generates data/testset.json containing 60 labelled test cases for TaskGuard."""
+
+import json
+from pathlib import Path
+
+test_cases = [
+    # ==================== SCAM CHATS (25 CASES) ====================
+    # --- STAGE 0: BAIT (5 cases) ---
+    {
+        "id": "TC001",
+        "title": "Stage 0 - YouTube Video Like Bait on WhatsApp (English)",
+        "input": """[30/10/2026, 10:15:00 AM] +91 98765 43210: Hello dear! Are you looking for part-time job from home?
+[30/10/2026, 10:16:30 AM] +91 98765 43210: You can earn ₹3,000 to ₹8,000 daily just by liking YouTube videos and subscribing to channels.
+[30/10/2026, 10:17:15 AM] User: Who is this? How did you get my number?
+[30/10/2026, 10:18:00 AM] +91 98765 43210: I am Priya from Global Media Marketing. Your resume was selected on Naukri. No experience or interview required. Daily payout guaranteed.
+[30/10/2026, 10:19:00 AM] +91 98765 43210: Please add our receptionist on Telegram: @Priya_HR_Manager to start right now.""",
+        "format": "whatsapp_export",
+        "language": "en",
+        "true_verdict": "SCAM",
+        "true_stage": 0,
+        "true_signals": ["TOO_GOOD_PAY", "NO_INTERVIEW_INSTANT_OFFER", "MOVE_TO_PRIVATE_CHAT"],
+        "notes": "Classic stage 0 unsolicited bait with high daily pay and push to Telegram."
+    },
+    {
+        "id": "TC002",
+        "title": "Stage 0 - Google Maps Review Part-Time Job (Hinglish)",
+        "input": """[28/10/2026, 02:10:00 PM] +91 87654 32109: Namaste! Part-time online work opportunity available.
+[28/10/2026, 02:11:00 PM] +91 87654 32109: Daily 20-30 mins kaam karke ₹2,000-₹5,000 kamayein. Sirf hotel aur restaurant ko 5 star review dena hai Google maps par.
+[28/10/2026, 02:12:30 PM] User: Kaisi company hai? Koi registration fee toh nahi?
+[28/10/2026, 02:13:10 PM] +91 87654 32109: Koi fee nahi hai bilkul free joining hai. Direct work from mobile. Salary per review ₹150 instantly.
+[28/10/2026, 02:14:00 PM] +91 87654 32109: Contact our project manager on Telegram @NehaReviewManager for your first trial task.""",
+        "format": "whatsapp_export",
+        "language": "hi",
+        "true_verdict": "SCAM",
+        "true_stage": 0,
+        "true_signals": ["TOO_GOOD_PAY", "MOVE_TO_PRIVATE_CHAT", "NO_INTERVIEW_INSTANT_OFFER"],
+        "notes": "Hinglish review scam bait promising ₹150/review and redirection to Telegram."
+    },
+    {
+        "id": "TC003",
+        "title": "Stage 0 - Instagram DM E-Commerce Order Rating (English)",
+        "input": """Recruiter: Hi! We noticed your profile and we have a flexible remote position.
+Recruiter: Help international merchants increase product ranking on Amazon and Flipkart.
+Recruiter: Salary: ₹5,000 per day for 1 hour of remote work. No CV or interview needed.
+User: Is this legit? Which company?
+Recruiter: We are affiliated with Amazon Global Merchant Services. Immediate start today. Contact mentor @Jessica_Amazon on Telegram.""",
+        "format": "text",
+        "language": "en",
+        "true_verdict": "SCAM",
+        "true_stage": 0,
+        "true_signals": ["BRAND_IMPERSONATION", "TOO_GOOD_PAY", "MOVE_TO_PRIVATE_CHAT"],
+        "notes": "Impersonating Amazon on social media, absurd compensation."
+    },
+    {
+        "id": "TC004",
+        "title": "Stage 0 - Punjabi SMS/WhatsApp Part-Time Job Offer",
+        "input": """+91 97812 34567: ਸਤਿ ਸ੍ਰੀ ਅਕਾਲ ਜੀ! ਘਰ ਬੈਠੇ ਮੋਬਾਈਲ ਤੋਂ ਕੰਮ ਕਰਕੇ ਰੋਜ਼ਾਨਾ ₹3000 ਤੋਂ ₹7000 ਕਮਾਓ।
++91 97812 34567: ਸਿਰਫ ਯੂਟਿਊਬ ਵੀਡੀਓ ਲਾਈਕ ਕਰਨੀਆਂ ਹਨ। ਕੋਈ ਇੰਟਰਵਿਊ ਨਹੀਂ।
++91 97812 34567: ਜੇਕਰ ਤੁਸੀਂ ਦਿਲਚਸਪੀ ਰੱਖਦੇ ਹੋ ਤਾਂ ਟੈਲੀਗ੍ਰਾਮ 'ਤੇ ਮੈਸੇਜ ਕਰੋ: @TaskPunjabOffice""",
+        "format": "text",
+        "language": "pa",
+        "true_verdict": "SCAM",
+        "true_stage": 0,
+        "true_signals": ["TOO_GOOD_PAY", "NO_INTERVIEW_INSTANT_OFFER", "MOVE_TO_PRIVATE_CHAT"],
+        "notes": "Punjabi script task scam offering instant high pay for YouTube likes."
+    },
+    {
+        "id": "TC005",
+        "title": "Stage 0 - Data Entry Work from Home SMS",
+        "input": """URGENT REQUIREMENT: Online Simple Data Entry / Typing Work. Earn Rs 4000/day. No skill or interview needed. Students and housewives welcome. Send WhatsApp message to +91 70123 45678 immediately to get joining link.""",
+        "format": "text",
+        "language": "en",
+        "true_verdict": "SUSPICIOUS",
+        "true_stage": 0,
+        "true_signals": ["TOO_GOOD_PAY", "NO_INTERVIEW_INSTANT_OFFER", "URGENCY_PRESSURE"],
+        "notes": "Single message bait SMS for data entry scam."
+    },
+
+    # --- STAGE 1: HOOK (5 cases) ---
+    {
+        "id": "TC006",
+        "title": "Stage 1 - Telegram Receptionist Trial Task with Real Payout (English)",
+        "input": """[29/10/2026, 11:00 AM] @Priya_HR: Welcome to Taskforce Digital E-Services! I am your mentor.
+[29/10/2026, 11:01 AM] @Priya_HR: Here is Task 1: Open this link, like the video and send screenshot. You will get ₹150 trial bonus.
+[29/10/2026, 11:05 AM] User: Done, sent screenshot of liked video.
+[29/10/2026, 11:06 AM] @Priya_HR: Send your UPI ID or GPay number to receive payment.
+[29/10/2026, 11:07 AM] User: myupi99@oksbi
+[29/10/2026, 11:10 AM] @Priya_HR: ₹150 has been credited to your account! Please check your bank SMS.
+[29/10/2026, 11:11 AM] User: Yes got ₹150! Thank you!
+[29/10/2026, 11:12 AM] @Priya_HR: Great! Adding you to our VIP Task Channel. We have merchant commission tasks coming up.""",
+        "format": "telegram",
+        "language": "en",
+        "true_verdict": "SCAM",
+        "true_stage": 1,
+        "true_signals": ["SMALL_PAYOUT_THEN_ESCALATE", "MOVE_TO_PRIVATE_CHAT"],
+        "notes": "Stage 1 hook: real small payout (₹150) credited to build psychological trust."
+    },
+    {
+        "id": "TC007",
+        "title": "Stage 1 - Hinglish Telegram Group with Fake Members Celebrating",
+        "input": """Mentor Rahul: Group members please note, Task 3 completed. All 50 members got ₹200.
+Member Pooja: Sir mere account mein ₹200 aa gaye thank you sir!
+Member Amit: Received ₹200 fast payment. Best part-time job!
+Mentor Rahul: @User aapka trial task approve ho gaya hai. Aapko ₹200 transfer kar diye hain.
+User: Haan sir mujhe ₹200 mil gaye hain Paytm par. Agla task kya hai?
+Mentor Rahul: Now next level is Merchant Order task with 30% profit.""",
+        "format": "telegram",
+        "language": "hi",
+        "true_verdict": "SCAM",
+        "true_stage": 1,
+        "true_signals": ["SMALL_PAYOUT_THEN_ESCALATE"],
+        "notes": "Stage 1 social proof group with small payouts."
+    },
+    {
+        "id": "TC008",
+        "title": "Stage 1 - Hotel Rating Small Commission Payout (English)",
+        "input": """[30/10/2026, 09:00 AM] Coordinator: Please rate 3 hotels on Google maps. Here are the links.
+[30/10/2026, 09:15 AM] Victim: Completed all 3 ratings and attached proof.
+[30/10/2026, 09:17 AM] Coordinator: Excellent! We transferred ₹300 to your Google Pay. Did you get the bank notification?
+[30/10/2026, 09:18 AM] Victim: Yes, ₹300 received in HDFC account.
+[30/10/2026, 09:20 AM] Coordinator: You are now eligible for our Premium Dispatch Group where daily earnings are ₹15,000.""",
+        "format": "whatsapp_export",
+        "language": "en",
+        "true_verdict": "SCAM",
+        "true_stage": 1,
+        "true_signals": ["SMALL_PAYOUT_THEN_ESCALATE", "TOO_GOOD_PAY"],
+        "notes": "Small legit-looking payment of ₹300, leading directly to premium tasks."
+    },
+    {
+        "id": "TC009",
+        "title": "Stage 1 - Punjabi Telegram Group Mentor Trust Building",
+        "input": """ਮੈਂਟਰ ਰਾਜੇਸ਼: ਸਾਰੇ ਨਵੇਂ ਮੈਂਬਰਾਂ ਦਾ ਸੁਆਗਤ ਹੈ। ਟਾਸਕ 1 ਦੇ ₹250 ਸਾਰਿਆਂ ਦੇ ਖਾਤੇ ਵਿੱਚ ਭੇਜ ਦਿੱਤੇ ਗਏ ਹਨ।
+ਯੂਜ਼ਰ: ਸਰ ਮੈਨੂੰ ₹250 ਗੂਗਲ ਪੇਅ 'ਤੇ ਮਿਲ ਗਏ ਨੇ। ਬਹੁਤ ਬਹੁਤ ਧੰਨਵਾਦ।
+ਮੈਂਟਰ ਰਾਜੇਸ਼: ਬਹੁਤ ਵਧੀਆ! ਹੁਣ ਸਾਡੇ ਕੋਲ ਪ੍ਰੀਮੀਅਮ ਵਪਾਰਕ ਆਰਡਰ ਹਨ ਜਿੱਥੇ ਤੁਸੀਂ ਹੋਰ ਕਮਾ ਸਕਦੇ ਹੋ।""",
+        "format": "telegram",
+        "language": "pa",
+        "true_verdict": "SCAM",
+        "true_stage": 1,
+        "true_signals": ["SMALL_PAYOUT_THEN_ESCALATE"],
+        "notes": "Punjabi stage 1 conversation with successful small payout confirmation."
+    },
+    {
+        "id": "TC010",
+        "title": "Stage 1 - Dashboard Balance Credited After Watching Trailers",
+        "input": """Supervisor: You watched 5 movie trailers. Your virtual wallet balance is now ₹450.
+User: Can I withdraw this money?
+Supervisor: We have sent ₹200 directly to your phonepe as registration incentive. Please check.
+User: Wow got ₹200 in phonepe!
+Supervisor: To withdraw the remaining ₹250 and earn ₹5,000 more, you need to accept task bundle #2.""",
+        "format": "text",
+        "language": "en",
+        "true_verdict": "SCAM",
+        "true_stage": 1,
+        "true_signals": ["SMALL_PAYOUT_THEN_ESCALATE", "TOO_GOOD_PAY"],
+        "notes": "Combination of virtual wallet balance and partial small real payout."
+    },
+
+    # --- STAGE 2: PREPAID TRAP (6 cases) ---
+    {
+        "id": "TC011",
+        "title": "Stage 2 - ₹1,000 Deposit for ₹1,300 Return (The Signature Demo Escalation)",
+        "input": """[30/10/2026, 12:00 PM] Mentor Rohit: You have completed all novice tasks. Now starting Merchant Prepaid Task.
+[30/10/2026, 12:01 PM] Mentor Rohit: Package A: Deposit ₹1,000 -> Return ₹1,300 within 15 minutes.
+[30/10/2026, 12:01 PM] Mentor Rohit: Package B: Deposit ₹5,000 -> Return ₹6,800.
+[30/10/2026, 12:02 PM] User: Why do I have to deposit my own money? This was supposed to be a job.
+[30/10/2026, 12:03 PM] Mentor Rohit: This is a merchant security deposit to place mock orders. The money is 100% safe and refunded with 30% profit immediately.
+[30/10/2026, 12:04 PM] Mentor Rohit: Pay ₹1,000 to merchant UPI ID: rajeshkumar8472@ybl and send screenshot immediately. Only 2 slots left!""",
+        "format": "whatsapp_export",
+        "language": "en",
+        "true_verdict": "SCAM",
+        "true_stage": 2,
+        "true_signals": ["UPFRONT_DEPOSIT", "PREPAID_RETURN", "URGENCY_PRESSURE"],
+        "notes": "Signature stage 2 prepaid trap: deposit ₹1000 for ₹1300 promised return to personal UPI."
+    },
+    {
+        "id": "TC012",
+        "title": "Stage 2 - Hinglish Combo Task Deposit Escalation",
+        "input": """Mentor: Bhai abhi Combo Task shuru ho raha hai.
+Mentor: Aapko ₹3,000 deposit karna hoga company portal par, aur 20 minute me ₹4,200 wapas milega with commission.
+User: Lekin mere paas abhi itne paise nahi hain.
+Mentor: Ye last chance hai high profit commission ka. Jaldi karo, personal account transfer mat socho, direct 40% guaranteed profit hai.
+Mentor: Send ₹3,000 to UPI: taskdeposit.payment@paytm now.""",
+        "format": "text",
+        "language": "hi",
+        "true_verdict": "SCAM",
+        "true_stage": 2,
+        "true_signals": ["UPFRONT_DEPOSIT", "PREPAID_RETURN", "URGENCY_PRESSURE"],
+        "notes": "Combo task deposit with pressure tactics and personal/merchant UPI."
+    },
+    {
+        "id": "TC013",
+        "title": "Stage 2 - Crypto / USDT Recharge for High Yield Tasks",
+        "input": """Tutor Anna: To activate the VIP rating tier on our cloud dashboard, you must recharge 50 USDT or ₹4,500.
+Tutor Anna: Guaranteed return after 5 orders is 75 USDT (₹6,800).
+Victim: I don't know crypto. Can I pay in rupees?
+Tutor Anna: Yes transfer ₹4,500 to account 918273645100 IFSC KKBK0001234. The system will auto convert and credit your dashboard.""",
+        "format": "telegram",
+        "language": "en",
+        "true_verdict": "SCAM",
+        "true_stage": 2,
+        "true_signals": ["UPFRONT_DEPOSIT", "PREPAID_RETURN"],
+        "notes": "Crypto/recharge pretext for prepaid trap."
+    },
+    {
+        "id": "TC014",
+        "title": "Stage 2 - Punjabi Deposit Scheme ₹2,000 to ₹2,800",
+        "input": """ਮੈਨੇਜਰ: ਹੁਣ ਵੀ.ਆਈ.ਪੀ ਮਰਚੈਂਟ ਟਾਸਕ ਸ਼ੁਰੂ ਹੋ ਚੁੱਕਾ ਹੈ।
+ਮੈਨੇਜਰ: ਜੇਕਰ ਤੁਸੀਂ ₹2,000 ਡਿਪਾਜ਼ਿਟ ਕਰਦੇ ਹੋ ਤਾਂ ਤੁਹਾਨੂੰ 30 ਮਿੰਟ ਵਿੱਚ ₹2,800 ਵਾਪਸ ਮਿਲਣਗੇ। 100% ਗਾਰੰਟੀਡ ਮੁਨਾਫਾ।
+ਯੂਜ਼ਰ: ਸਰ ਮੈਨੂੰ ਡਰ ਲੱਗ ਰਿਹਾ ਹੈ ਕਿ ਪੈਸੇ ਫਸ ਨਾ ਜਾਣ।
+ਮੈਨੇਜਰ: ਕੋਈ ਚਿੰਤਾ ਨਹੀਂ ਜੀ, ਕੰਪਨੀ ਰਜਿਸਟਰਡ ਹੈ। ਤੁਰੰਤ ਇਸ ਯੂਪੀਆਈ 'ਤੇ ਪੈਸੇ ਭੇਜੋ: shopdeal@axl""",
+        "format": "whatsapp_export",
+        "language": "pa",
+        "true_verdict": "SCAM",
+        "true_stage": 2,
+        "true_signals": ["UPFRONT_DEPOSIT", "PREPAID_RETURN"],
+        "notes": "Punjabi stage 2 deposit demand promising quick returns."
+    },
+    {
+        "id": "TC015",
+        "title": "Stage 2 - Multi-tier Escalation ₹5,000 to ₹10,000",
+        "input": """Admin: First task of ₹1,000 was successful. Your portal balance shows ₹1,350.
+Admin: But to unlock the complete payout, you must finish the 2-in-1 combo task.
+Admin: Next task requirement is deposit ₹5,000. Total payout will be ₹8,500.
+User: You didn't tell me I had to deposit ₹5,000 more! Give me my ₹1,350 back first.
+Admin: The system is automated. Without finishing the combo, withdrawal cannot open. Deposit ₹5,000 now.""",
+        "format": "telegram",
+        "language": "en",
+        "true_verdict": "SCAM",
+        "true_stage": 2,
+        "true_signals": ["UPFRONT_DEPOSIT", "PREPAID_RETURN", "URGENCY_PRESSURE"],
+        "notes": "Combo task bait and switch trapping victim into depositing more."
+    },
+    {
+        "id": "TC016",
+        "title": "Stage 2 - Telegram Hotel Booking Prepaid Task",
+        "input": """Task Guide: Order 4/5: Luxury suite booking simulation.
+Task Guide: Transfer ₹8,000 to merchant desk: bookstay99@icici
+User: Already deposited ₹2,000 earlier! Why another ₹8,000?
+Task Guide: This is high value tier. Your total balance will become ₹14,500 withdrawable immediately after this final transaction.""",
+        "format": "telegram",
+        "language": "en",
+        "true_verdict": "SCAM",
+        "true_stage": 2,
+        "true_signals": ["UPFRONT_DEPOSIT", "PREPAID_RETURN"],
+        "notes": "Prepaid task escalation during booking simulation."
+    },
+
+    # --- STAGE 3: LOCK-IN (5 cases) ---
+    {
+        "id": "TC017",
+        "title": "Stage 3 - TDS & Unfreeze Fee Demand to Release ₹1.5 Lakh (English)",
+        "input": """[30/10/2026, 04:30 PM] User: I tried to withdraw my balance of ₹1,54,000 from the platform but it says 'WITHDRAWAL FROZEN'. Please help!
+[30/10/2026, 04:32 PM] Finance Dept: Sir, your account has triggered anti-money laundering audit. As per Indian Income Tax regulations, you must pay 18% GST and 20% TDS (₹58,520) before withdrawal can be approved.
+[30/10/2026, 04:34 PM] User: Can't you just deduct the tax from my ₹1.54 Lakh balance and give me the rest?
+[30/10/2026, 04:35 PM] Finance Dept: No, the system cannot deduct automatically. You must deposit ₹58,520 from your own bank account to our clearing account within 2 hours or your account will be permanently frozen and reported to police!""",
+        "format": "whatsapp_export",
+        "language": "en",
+        "true_verdict": "SCAM",
+        "true_stage": 3,
+        "true_signals": ["WITHDRAWAL_BLOCKED_FEE", "URGENCY_PRESSURE"],
+        "notes": "Stage 3 lock-in: withdrawal frozen, demanding 38% tax/unfreeze fee to personal account."
+    },
+    {
+        "id": "TC018",
+        "title": "Stage 3 - System Error Repair Deposit (Hinglish)",
+        "input": """Customer Service: Alert! Aapne task galat kiya tha, isliye system error code #404 trigger ho gaya.
+Victim: Maine instructions follow kiye the. Mera ₹80,000 wapas do!
+Customer Service: Error repair karne ke liye data fix charge ₹25,000 deposit karna padega. Agar 24 hours me nahi bhara toh account terminate ho jayega aur sara paisa forfeit ho jayega.
+Victim: Yeh toh loot hai! Mere saare paise chale gaye.""",
+        "format": "text",
+        "language": "hi",
+        "true_verdict": "SCAM",
+        "true_stage": 3,
+        "true_signals": ["WITHDRAWAL_BLOCKED_FEE", "URGENCY_PRESSURE"],
+        "notes": "Fake 'task error / data fix' penalty to unfreeze frozen funds."
+    },
+    {
+        "id": "TC019",
+        "title": "Stage 3 - Credit Score Restoration Deposit Demand",
+        "input": """Account Auditor: Your platform credit score has dropped to 80% because of delayed order submission.
+User: I already put in ₹50,000! Let me withdraw!
+Account Auditor: Minimum credit score of 100% is needed for withdrawal. Each 10% requires ₹15,000 recharge. Deposit ₹30,000 immediately to restore score.
+User: I have no money left, I took loan for this!
+Account Auditor: Arrange money from friends, or you will lose entire ₹50,000.""",
+        "format": "telegram",
+        "language": "en",
+        "true_verdict": "SCAM",
+        "true_stage": 3,
+        "true_signals": ["WITHDRAWAL_BLOCKED_FEE", "URGENCY_PRESSURE"],
+        "notes": "Bogus 'credit score / points' pretext to extort more money."
+    },
+    {
+        "id": "TC020",
+        "title": "Stage 3 - Punjabi Tax & Clearing Fee to Release ₹95,000",
+        "input": """ਅਕਾਊਂਟ ਮੈਨੇਜਰ: ਤੁਹਾਡੀ ਨਿਕਾਸੀ (withdrawal) ਰੋਕ ਦਿੱਤੀ ਗਈ ਹੈ ਕਿਉਂਕਿ ਸਰਕਾਰੀ ਟੈਕਸ ਬਕਾਇਆ ਹੈ।
+ਯੂਜ਼ਰ: ਪਰ ਮੇਰਾ ₹95,000 ਵਾਲੇਟ ਵਿੱਚ ਪਿਆ ਹੈ, ਉਸ ਵਿੱਚੋਂ ਕੱਟ ਲਵੋ।
+ਅਕਾਊਂਟ ਮੈਨੇਜਰ: ਸਿਸਟਮ ਵਿੱਚੋਂ ਨਹੀਂ ਕੱਟਿਆ ਜਾ ਸਕਦਾ। ਤੁਹਾਨੂੰ ਵੱਖਰੇ ਤੌਰ 'ਤੇ ₹20,000 ਕਲੀਅਰੈਂਸ ਫੀਸ ਜਮ੍ਹਾਂ ਕਰਵਾਉਣੀ ਪਵੇਗੀ। ਜੇਕਰ ਅੱਜ ਨਾ ਭਰੀ ਤਾਂ ਸਾਰਾ ਖਾਤਾ ਬੰਦ ਹੋ ਜਾਵੇਗਾ।""",
+        "format": "whatsapp_export",
+        "language": "pa",
+        "true_verdict": "SCAM",
+        "true_stage": 3,
+        "true_signals": ["WITHDRAWAL_BLOCKED_FEE", "URGENCY_PRESSURE"],
+        "notes": "Punjabi stage 3 lock-in demanding ₹20,000 clearing fee."
+    },
+    {
+        "id": "TC021",
+        "title": "Stage 3 - Cyber Cell Impersonation Threat to Pay Fine",
+        "input": """Compliance Officer: You attempted unauthorized withdrawal. Our legal team will report your Aadhaar and PAN to Cyber Crime Crime Branch unless verification bond of ₹40,000 is settled immediately.
+Victim: Please don't do that, I will arrange ₹40,000 tomorrow!
+Compliance Officer: Must be paid within 45 minutes to avoid police dispatch.""",
+        "format": "text",
+        "language": "en",
+        "true_verdict": "SCAM",
+        "true_stage": 3,
+        "true_signals": ["WITHDRAWAL_BLOCKED_FEE", "URGENCY_PRESSURE"],
+        "notes": "Intimidation and legal threats forcing extra deposits."
+    },
+
+    # --- STAGE 4: EXIT & SECONDARY SCAMS (4 cases) ---
+    {
+        "id": "TC022",
+        "title": "Stage 4 - Blocked on Telegram and WhatsApp (English)",
+        "input": """[30/10/2026, 06:00 PM] User: Hello? Are you there?
+[30/10/2026, 06:05 PM] User: Why is the Telegram group deleted?
+[30/10/2026, 06:15 PM] User: The website url says 'Server Not Found'. Please reply!
+[30/10/2026, 06:30 PM] User: The phone number is switched off. Messages are not delivering.
+[30/10/2026, 07:00 PM] User: I have been blocked. They took my ₹3,50,000 and disappeared.""",
+        "format": "whatsapp_export",
+        "language": "en",
+        "true_verdict": "SCAM",
+        "true_stage": 4,
+        "true_signals": ["WITHDRAWAL_BLOCKED_FEE"],
+        "notes": "Stage 4 exit: victim blocked, group deleted, scammer vanished with ₹3.5 Lakh."
+    },
+    {
+        "id": "TC023",
+        "title": "Stage 4 - Fake Cyber Recovery Agent Approach (Secondary Scam)",
+        "input": """Advocate Sharma Cyber Help: Hello, did you recently lose money in a Telegram task scam?
+Victim: Yes! I lost ₹2,20,000 last week in a prepaid rating scam. Can you help?
+Advocate Sharma Cyber Help: We are authorized recovery agents with tie-up with RBI and cyber cell. We have traced your funds to an offshore merchant.
+Advocate Sharma Cyber Help: To recover 100% of your ₹2,20,000 within 24 hours, you just need to pay our server unfreeze charge of ₹12,000 in advance.
+Victim: Is this guaranteed?
+Advocate Sharma Cyber Help: 100% guaranteed government recovery.""",
+        "format": "telegram",
+        "language": "en",
+        "true_verdict": "SCAM",
+        "true_stage": 4,
+        "true_signals": ["UPFRONT_DEPOSIT", "PREPAID_RETURN"],
+        "notes": "Secondary recovery scam targeting a stage 4 victim."
+    },
+    {
+        "id": "TC024",
+        "title": "Stage 4 - Hinglish Chat After Being Kicked Out of Scam Channel",
+        "input": """Victim: Group se nikaal diya mujhe.
+Victim: Number switch off aa raha hai.
+Victim: Mere 1.2 lakh rupaye doob gaye bhai, koi reply nahi kar raha Telegram par. Profile picture aur username sab delete kar diya unhone.""",
+        "format": "text",
+        "language": "hi",
+        "true_verdict": "SCAM",
+        "true_stage": 4,
+        "true_signals": [],
+        "notes": "Victim realization in Hinglish after complete exit scam."
+    },
+    {
+        "id": "TC025",
+        "title": "Stage 4 - Punjabi Blocked Post-Scam Conversation",
+        "input": """ਯੂਜ਼ਰ: ਹੈਲੋ ਸਰ? ਫੋਨ ਕਿਉਂ ਬੰਦ ਆ ਰਿਹਾ ਹੈ?
+ਯੂਜ਼ਰ: ਟੈਲੀਗ੍ਰਾਮ 'ਤੇ ਮੈਨੂੰ ਬਲਾਕ ਕਰ ਦਿੱਤਾ ਗਿਆ ਹੈ। ਗਰੁੱਪ ਵੀ ਡਿਲੀਟ ਹੋ ਗਿਆ।
+ਯੂਜ਼ਰ: ਮੇਰੇ ₹50,000 ਚਲੇ ਗਏ। ਕੀ ਕੋਈ ਪੈਸੇ ਵਾਪਸ ਕਰਵਾ ਸਕਦਾ ਹੈ?""",
+        "format": "text",
+        "language": "pa",
+        "true_verdict": "SCAM",
+        "true_stage": 4,
+        "true_signals": [],
+        "notes": "Stage 4 exit in Punjabi: blocked, group deleted, money lost."
+    },
+
+    # ==================== SCAM POSTS & OFFER LETTERS (10 CASES) ====================
+    {
+        "id": "TC026",
+        "title": "Fake Offer Letter with Registration & Laptop Security Fee",
+        "input": """TATA CONSULTANCY SERVICES (IMPERSONATED)
+APPOINTMENT LETTER FOR JUNIOR SOFTWARE ENGINEER
+Ref: TCS/HR/2026/8912
+Dear Candidate,
+Congratulations! We are pleased to offer you the position of Junior Software Trainee with an annual CTC of ₹8,50,000.
+Terms & Conditions:
+1. Candidate must deposit a refundable security deposit of ₹9,500 towards company laptop and background verification before joining date.
+2. The deposit must be transferred to HR Officer UPI: tcsofficial.hr@ybl within 48 hours.
+HR Department, Email: careers.tcs@gmail.com""",
+        "format": "offer_letter",
+        "language": "en",
+        "true_verdict": "SCAM",
+        "true_stage": 2,
+        "true_signals": ["UPFRONT_DEPOSIT", "FREE_MAIL_HR", "BRAND_IMPERSONATION"],
+        "notes": "Fake TCS offer letter demanding ₹9,500 laptop security deposit to Gmail address."
+    },
+    {
+        "id": "TC027",
+        "title": "Fake Airport Authority of India Job Post with GST Fee",
+        "input": """AIRPORT AUTHORITY RECRUITMENT 2026
+Direct selection for Ground Staff and Ticketing Executive.
+Salary: ₹35,000 - ₹55,000 / month. No written exam.
+Candidates must pay mandatory medical test & uniform clearance fee of ₹2,850 via Google Pay to 9876543210.
+Official contact: aai.recruitment2026@rediffmail.com""",
+        "format": "text",
+        "language": "en",
+        "true_verdict": "SCAM",
+        "true_stage": 2,
+        "true_signals": ["UPFRONT_DEPOSIT", "FREE_MAIL_HR", "BRAND_IMPERSONATION"],
+        "notes": "Government PSU impersonation with upfront medical/uniform charge on Rediffmail."
+    },
+    {
+        "id": "TC028",
+        "title": "Wipro Impersonation Offer Letter with Gate Pass Fee",
+        "input": """WIPRO TECHNOLOGIES CAMPUS SELECTION
+We are glad to inform that your profile was shortlisted for System Engineer role.
+Package: ₹6.5 LPA. Work location: Bangalore / Remote.
+Please note that you have to pay ₹4,200 for company RFID ID card & courier charges to bank account: 501002345678 IFSC HDFC0000123.
+Failure to pay within 24 hours will cancel your offer.""",
+        "format": "offer_letter",
+        "language": "en",
+        "true_verdict": "SCAM",
+        "true_stage": 2,
+        "true_signals": ["UPFRONT_DEPOSIT", "BRAND_IMPERSONATION", "URGENCY_PRESSURE"],
+        "notes": "Wipro impostor asking for gate pass/courier fee."
+    },
+    {
+        "id": "TC029",
+        "title": "Meesho Seller Review Job Ad on Facebook",
+        "input": """Earn ₹40,000 monthly working with Meesho!
+Work: Help Meesho sellers boost ratings by placing virtual orders.
+Daily payout. Joining kit fee: ₹799 refundable after 1 week.
+Apply on WhatsApp: +91 91234 56789.""",
+        "format": "text",
+        "language": "en",
+        "true_verdict": "SCAM",
+        "true_stage": 2,
+        "true_signals": ["UPFRONT_DEPOSIT", "BRAND_IMPERSONATION", "TOO_GOOD_PAY"],
+        "notes": "Meesho review scam with joining kit fee."
+    },
+    {
+        "id": "TC030",
+        "title": "Reliance Jio 5G Tower Installation Scam",
+        "input": """RELIANCE JIO 5G TOWER LEASE SCHEME 2026
+Install Jio Tower on your empty plot or roof.
+Monthly rent: ₹45,000 + 1 member family job in Jio. Advance agreement amount ₹15 Lakhs.
+Applicant must deposit government NOC registration charge of ₹6,500 to SBI Account 30981234567.
+Contact: jio.infocomm.infra@gmail.com""",
+        "format": "text",
+        "language": "en",
+        "true_verdict": "SCAM",
+        "true_stage": 2,
+        "true_signals": ["UPFRONT_DEPOSIT", "FREE_MAIL_HR", "BRAND_IMPERSONATION"],
+        "notes": "Classic tower lease scam demanding NOC fees."
+    },
+    {
+        "id": "TC031",
+        "title": "Hinglish Work-From-Home SMS with Form Filling Fee",
+        "input": """Ghar baithe typing karke kamayein ₹30,000 per month.
+Sirf 50 form daily fill karna hai.
+Joining software activate karne ke liye ₹1,200 payment kijiye is UPI par: formwork@oksbi.
+Kaam turant shuru hoga.""",
+        "format": "text",
+        "language": "hi",
+        "true_verdict": "SCAM",
+        "true_stage": 2,
+        "true_signals": ["UPFRONT_DEPOSIT", "TOO_GOOD_PAY"],
+        "notes": "Hinglish typing scam asking for software activation charge."
+    },
+    {
+        "id": "TC032",
+        "title": "Fake Flipkart Delivery Partner Franchise Fee",
+        "input": """FLIPKART LOGISTICS EXPANSION NOTICE
+Start your own Flipkart delivery hub in your pin code.
+Guaranteed monthly earning ₹1,50,000.
+Security franchise fee: ₹15,000 refundable.
+Transfer immediately to Flipkart Logistics Agent account on PhonePe: 9811223344@ybl.""",
+        "format": "text",
+        "language": "en",
+        "true_verdict": "SCAM",
+        "true_stage": 2,
+        "true_signals": ["UPFRONT_DEPOSIT", "BRAND_IMPERSONATION", "TOO_GOOD_PAY"],
+        "notes": "Flipkart delivery franchise deposit scam."
+    },
+    {
+        "id": "TC033",
+        "title": "Punjabi Typing Job Post with Security Deposit",
+        "input": """ਘਰ ਬੈਠੇ ਪੰਜਾਬੀ ਟਾਈਪਿੰਗ ਦਾ ਕੰਮ। ਪ੍ਰਤੀ ਮਹੀਨਾ ₹25,000 ਕਮਾਓ।
+ਸਮੱਗਰੀ ਡਿਲੀਵਰੀ ਅਤੇ ਸੁਰੱਖਿਆ ਡਿਪਾਜ਼ਿਟ ਲਈ ₹1,500 ਜਮ੍ਹਾਂ ਕਰਵਾਓ। ਪਹਿਲੇ ਮਹੀਨੇ ਦੀ ਤਨਖਾਹ ਨਾਲ ਵਾਪਸ ਹੋਵੇਗਾ।
+ਸੰਪਰਕ: punjabtypists@gmail.com""",
+        "format": "text",
+        "language": "pa",
+        "true_verdict": "SCAM",
+        "true_stage": 2,
+        "true_signals": ["UPFRONT_DEPOSIT", "FREE_MAIL_HR"],
+        "notes": "Punjabi typing job asking for advance security deposit on Gmail."
+    },
+    {
+        "id": "TC034",
+        "title": "Fake Bank of Baroda Peon & Clerk Recruitment",
+        "input": """BANK RECRUITMENT CELL 2026
+Direct Walk-in / Online Joining for Bank Clerk.
+No exam, direct joining on merit list.
+Registration and document verification fee ₹1,999 to be paid to bank officer personal UPI id: verified.bankdesk@icici.""",
+        "format": "text",
+        "language": "en",
+        "true_verdict": "SCAM",
+        "true_stage": 2,
+        "true_signals": ["UPFRONT_DEPOSIT", "NO_INTERVIEW_INSTANT_OFFER"],
+        "notes": "Bogus bank recruitment charging verification fee to personal UPI."
+    },
+    {
+        "id": "TC035",
+        "title": "Telegram VIP Channel Subscription for High Paying Job Leads",
+        "input": """Want verified high paying remote jobs earning $50/hour?
+Subscribe to our secret VIP Telegram bot channel.
+Fee: ₹2,500 one-time lifetime access. Guaranteed placement in top US firms within 48 hours.""",
+        "format": "text",
+        "language": "en",
+        "true_verdict": "SCAM",
+        "true_stage": 2,
+        "true_signals": ["UPFRONT_DEPOSIT", "TOO_GOOD_PAY", "MOVE_TO_PRIVATE_CHAT"],
+        "notes": "Job channel subscription scam."
+    },
+
+    # ==================== GENUINE OFFERS & RECRUITER POSTS (20 CASES) ====================
+    {
+        "id": "TC036",
+        "title": "Genuine Infosys Campus Placement Offer Letter",
+        "input": """INFOSYS LIMITED
+CIN: L85110KA1981PLC013115
+Electronic City, Hosur Road, Bangalore - 560100
+Date: October 15, 2026
+Dear Student,
+Sub: Offer of Employment - Systems Engineer
+Further to our campus recruitment drive and subsequent technical & HR interviews conducted on October 5, 2026, we are pleased to offer you the role of Systems Engineer.
+Annual Gross Salary: INR 3,60,000 per annum.
+Please note:
+- Infosys does not charge any application, processing, or training fee at any stage of recruitment.
+- Please verify your offer letter on our official portal: https://career.infosys.com
+- Your official reporting date is January 12, 2027 at Infosys Mysore Campus.
+Warm regards,
+HR Recruitment Team, Infosys Limited
+recruitment@infosys.com""",
+        "format": "offer_letter",
+        "language": "en",
+        "true_verdict": "LIKELY_GENUINE",
+        "true_stage": 0,
+        "true_signals": ["GENUINE_SIGNALS"],
+        "notes": "Authentic Infosys campus offer letter explicitly mentioning zero fees and official portal."
+    },
+    {
+        "id": "TC037",
+        "title": "Genuine TCS Interview Call Email",
+        "input": """From: talent.acquisition@tcs.com
+To: candidate@college.edu
+Subject: TCS NQT Technical Interview Schedule
+Dear Candidate,
+Based on your TCS National Qualifier Test (NQT) score, your interview for the Ninja/Digital cadre is scheduled as follows:
+Date: 4th November 2026, Time: 10:30 AM IST.
+Platform: Microsoft Teams (Meeting link will be shared via TCS iON portal).
+Note: TCS never requests fees, security deposits, or bank transfers for interviews or onboarding. All official communication originates only from @tcs.com domains.""",
+        "format": "text",
+        "language": "en",
+        "true_verdict": "LIKELY_GENUINE",
+        "true_stage": 0,
+        "true_signals": ["GENUINE_SIGNALS"],
+        "notes": "Official interview schedule from verified corporate domain."
+    },
+    {
+        "id": "TC038",
+        "title": "Genuine Unpaid Educational Internship for College Credit",
+        "input": """NGO Youth for Environment Trust
+Internship Title: Social Media Awareness Intern (Unpaid / Volunteer)
+Duration: 6 weeks (10 hours per week).
+Responsibilities: Create awareness graphics about plastic pollution on Instagram.
+Perks: Certificate of completion, Letter of Recommendation, mentor feedback.
+Requirement: Current college student. No fee of any kind is charged.
+Apply via Google Form linked on our official university notice board.""",
+        "format": "text",
+        "language": "en",
+        "true_verdict": "LIKELY_GENUINE",
+        "true_stage": 0,
+        "true_signals": ["GENUINE_SIGNALS"],
+        "notes": "Legitimate unpaid volunteer internship for college credit without scam mechanics."
+    },
+    {
+        "id": "TC039",
+        "title": "Genuine LinkedIn Recruiter Message from Swiggy",
+        "input": """Hi Ananya,
+I lead product recruitment at Swiggy (Bundl Technologies Pvt Ltd). I came across your profile and was impressed by your frontend open-source contributions.
+We are looking for a Software Development Engineer - II (React, TypeScript) for our consumer app team in Bangalore.
+Compensation: Industry competitive base + ESOPs.
+Would you be open for an exploratory 20-minute chat this week? If interested, please review our careers page at https://careers.swiggy.com or reply with your updated resume.
+Best,
+Siddharth Sen, Senior Recruiter | Swiggy""",
+        "format": "text",
+        "language": "en",
+        "true_verdict": "LIKELY_GENUINE",
+        "true_stage": 0,
+        "true_signals": ["GENUINE_SIGNALS"],
+        "notes": "Normal corporate recruiter outreach with official career portal link."
+    },
+    {
+        "id": "TC040",
+        "title": "Genuine Zomato Operations Specialist Job Description",
+        "input": """ZOMATO LIMITED
+Role: City Logistics Coordinator - Chandigarh
+Eligibility: Graduate in any discipline with 1-2 years field experience.
+Salary: INR 3,00,000 - 3,50,000 fixed + health insurance.
+Selection Process:
+1. Online aptitude test on Zomato Careers portal
+2. In-person interview at Chandigarh Regional Office
+3. Background check
+We do not charge any money for hiring. Apply only through https://zomato.com/careers.""",
+        "format": "text",
+        "language": "en",
+        "true_verdict": "LIKELY_GENUINE",
+        "true_stage": 0,
+        "true_signals": ["GENUINE_SIGNALS"],
+        "notes": "Genuine standard job posting with clear multi-stage interview process."
+    },
+    {
+        "id": "TC041",
+        "title": "Genuine Wipro Project Engineer Onboarding Notice",
+        "input": """From: manager.onboarding@wipro.com
+Dear Trainee,
+Welcome to the Wipro Elite National Talent Hunt onboarding program.
+Your virtual orientation begins on Monday, 9:00 AM via Webex.
+Please ensure all your scanned degree certificates and government ID proofs are uploaded to the Wipro Candidate Portal.
+Never share your personal banking PIN, OTP, or transfer funds to any individual claiming to represent Wipro.""",
+        "format": "text",
+        "language": "en",
+        "true_verdict": "LIKELY_GENUINE",
+        "true_stage": 0,
+        "true_signals": ["GENUINE_SIGNALS"],
+        "notes": "Legitimate onboarding email with strong security advice."
+    },
+    {
+        "id": "TC042",
+        "title": "Genuine Flipkart Supply Chain Associate Job",
+        "input": """Flipkart Internet Private Limited
+Hiring: Supply Chain Operations Executive (Hub Lead)
+Location: Gurgaon, Haryana.
+Requirements: Degree in Supply Chain/Logistics or 2 years equivalent warehouse management experience.
+Application: Visit flipkartcareers.com and search Job ID: FLP-9021.
+Note: Flipkart hiring is purely merit-based. No agent or intermediary is authorized to collect fees.""",
+        "format": "text",
+        "language": "en",
+        "true_verdict": "LIKELY_GENUINE",
+        "true_stage": 0,
+        "true_signals": ["GENUINE_SIGNALS"],
+        "notes": "Standard corporate hiring posting."
+    },
+    {
+        "id": "TC043",
+        "title": "Genuine College Placement Cell Circular",
+        "input": """CT GROUP OF INSTITUTIONS - TRAINING & PLACEMENT CELL
+CIRCULAR / TPC / 2026 / 44
+Company: HCL Technologies Limited
+Eligibility: B.Tech (CSE, IT, ECE) 2027 batch with minimum 65% aggregate.
+Role: Graduate Engineer Trainee
+CTC: 4.25 LPA
+Drive Date: 12th November 2026 at Seminar Hall, Maqsudan Campus.
+Registration: Fill internal college ERP portal by Friday 5 PM.
+No registration charges.""",
+        "format": "text",
+        "language": "en",
+        "true_verdict": "LIKELY_GENUINE",
+        "true_stage": 0,
+        "true_signals": ["GENUINE_SIGNALS"],
+        "notes": "Authentic on-campus placement notification."
+    },
+    {
+        "id": "TC044",
+        "title": "Genuine Google India Software Internship Posting",
+        "input": """Google India - Software Engineering Intern, Summer 2027
+Locations: Bengaluru, Hyderabad
+Minimum qualifications: Currently pursuing BS/MS in Computer Science or related field. Experience with C++, Java, or Python.
+To apply, submit your resume, academic transcripts, and coding portfolio at google.com/careers. Google does not collect any fee during recruitment.""",
+        "format": "text",
+        "language": "en",
+        "true_verdict": "LIKELY_GENUINE",
+        "true_stage": 0,
+        "true_signals": ["GENUINE_SIGNALS"],
+        "notes": "Official Google careers posting."
+    },
+    {
+        "id": "TC045",
+        "title": "Genuine Hindi Placement Notice - Tech Mahindra",
+        "input": """टेक महिंद्रा कैंपस प्लेसमेंट सूचना:
+बी.टेक और एमसीए के छात्र-छात्राओं को सूचित किया जाता है कि टेक महिंद्रा लिमिटेड द्वारा सॉफ्टवेयर एसोसिएट पद हेतु कैंपस ड्राइव 18 नवंबर को आयोजित किया जाएगा।
+चयन प्रक्रिया: ऑनलाइन कोडिंग टेस्ट और तकनीकी साक्षात्कार।
+आवेदन शुल्क: शून्य।
+इच्छुक छात्र अपने कॉलेज प्लेसमेंट सेल से संपर्क करें।""",
+        "format": "text",
+        "language": "hi",
+        "true_verdict": "LIKELY_GENUINE",
+        "true_stage": 0,
+        "true_signals": ["GENUINE_SIGNALS"],
+        "notes": "Genuine campus placement notice in Hindi."
+    },
+    {
+        "id": "TC046",
+        "title": "Genuine Punjabi University Job Fair Announcement",
+        "input": """ਪੰਜਾਬ ਯੂਨੀਵਰਸਿਟੀ ਰੋਜ਼ਗਾਰ ਮੇਲਾ 2026:
+ਵੱਖ-ਵੱਖ ਬਹੁ-ਰਾਸ਼ਟਰੀ ਕੰਪਨੀਆਂ ਵੱਲੋਂ ਨੌਜਵਾਨਾਂ ਲਈ ਨੌਕਰੀਆਂ ਦੇ ਮੌਕੇ।
+ਕੋਈ ਰਜਿਸਟ੍ਰੇਸ਼ਨ ਫੀਸ ਨਹੀਂ ਹੈ। ਉਮੀਦਵਾਰ ਆਪਣੇ ਰੈਜ਼ਿਊਮੇ ਅਤੇ ਸਰਟੀਫਿਕੇਟਾਂ ਨਾਲ ਸਿੱਧੇ ਕਾਲਜ ਕੈਂਪਸ ਪਹੁੰਚਣ।
+ਅਧਿਕਾਰਤ ਪੋਰਟਲ 'ਤੇ ਰਜਿਸਟਰ ਕਰੋ।""",
+        "format": "text",
+        "language": "pa",
+        "true_verdict": "LIKELY_GENUINE",
+        "true_stage": 0,
+        "true_signals": ["GENUINE_SIGNALS"],
+        "notes": "Genuine Punjabi university job fair announcement."
+    },
+    {
+        "id": "TC047",
+        "title": "Genuine Microsoft Research Fellowship Call",
+        "input": """Microsoft Research India - Post-Doc & Research Fellow Program
+Inviting applications from graduating masters and PhD students for machine learning research.
+Monthly fellowship stipend provided as per government scientific guidelines.
+Interviews will be held online via Microsoft Teams. Details on microsoft.com/en-us/research/lab/microsoft-research-india/""",
+        "format": "text",
+        "language": "en",
+        "true_verdict": "LIKELY_GENUINE",
+        "true_stage": 0,
+        "true_signals": ["GENUINE_SIGNALS"],
+        "notes": "Legitimate research fellowship with official research portal URL."
+    },
+    {
+        "id": "TC048",
+        "title": "Genuine State Bank of India Probationary Officer Exam Notification",
+        "input": """CENTRAL RECRUITMENT & PROMOTION DEPARTMENT, SBI CORPORATE CENTRE, MUMBAI
+ADVERTISEMENT NO. CRPD/PO/2026-27/14
+Recruitment of Probationary Officers in State Bank of India.
+Eligible candidates can apply online only through official bank website https://bank.sbi/careers or https://sbi.co.in/careers.
+Selection via Preliminary Examination, Main Examination, and Group Exercise/Interview.
+Beware of fake job offers or intermediaries.""",
+        "format": "text",
+        "language": "en",
+        "true_verdict": "LIKELY_GENUINE",
+        "true_stage": 0,
+        "true_signals": ["GENUINE_SIGNALS"],
+        "notes": "Official public sector bank advertisement."
+    },
+    {
+        "id": "TC049",
+        "title": "Genuine AngelList / Wellfound Startup Developer Outreach",
+        "input": """Hi Vikram, I am the CTO at FintechNova (backed by Peak XV). We are building next-gen UPI payments infrastructure.
+Saw your GitHub profile and your blog post on distributed consensus. We'd love to chat about a Backend Engineer role (Golang, Kafka).
+Package: 18-24 LPA base + equity.
+Let me know if you are open to a 30-min Google Meet with our tech leads.""",
+        "format": "text",
+        "language": "en",
+        "true_verdict": "LIKELY_GENUINE",
+        "true_stage": 0,
+        "true_signals": ["GENUINE_SIGNALS"],
+        "notes": "Normal startup technical founder outreach."
+    },
+    {
+        "id": "TC050",
+        "title": "Genuine Academic Research Assistant Opening (IIT Delhi)",
+        "input": """INDIAN INSTITUTE OF TECHNOLOGY DELHI
+Department of Computer Science & Engineering
+Applications are invited from Indian nationals for Junior Research Fellow (JRF) in DST-funded project.
+Qualifications: B.Tech/M.Tech with valid GATE score.
+Fellowship: ₹37,000/month + HRA.
+Send CV with subject line 'Application for JRF - DST Project' to prof.aggarwal@cse.iitd.ac.in.
+No fee is charged for applying.""",
+        "format": "text",
+        "language": "en",
+        "true_verdict": "LIKELY_GENUINE",
+        "true_stage": 0,
+        "true_signals": ["GENUINE_SIGNALS"],
+        "notes": "Legitimate university JRF advertisement."
+    },
+    {
+        "id": "TC051",
+        "title": "Genuine Amazon Customer Service Associate Remote",
+        "input": """Amazon Virtual Customer Service Hiring 2026
+Role: Customer Service Associate (Work from Home, All India)
+Salary: ₹22,000/month + Internet allowance + medical insurance.
+Equipment: Amazon provides company laptop and headset upon selection.
+Assessment: Complete online audio/typing assessment on amazon.jobs portal.
+Amazon never asks for security deposits or processing fees.""",
+        "format": "text",
+        "language": "en",
+        "true_verdict": "LIKELY_GENUINE",
+        "true_stage": 0,
+        "true_signals": ["GENUINE_SIGNALS"],
+        "notes": "Official Amazon VCS job description with equipment provided."
+    },
+    {
+        "id": "TC052",
+        "title": "Genuine Hinglish HR Follow-up for Interview Reschedule",
+        "input": """HR Sneha: Hi Amit, humne kal aapka first round interview liya tha for Senior Executive role.
+HR Sneha: Panel ko aapka performance accha laga, hum second technical round schedule karna chahte hain Thursday 3 PM.
+Amit: Thank you Sneha ma'am. Thursday 3 PM works for me.
+HR Sneha: Perfect, maine calendar invite official email amit.k@gmail.com par bhej diya hai from sneha.v@naukri.com.""",
+        "format": "whatsapp_export",
+        "language": "hi",
+        "true_verdict": "LIKELY_GENUINE",
+        "true_stage": 0,
+        "true_signals": ["GENUINE_SIGNALS"],
+        "notes": "Normal multi-stage recruiter chat in conversational Hinglish."
+    },
+    {
+        "id": "TC053",
+        "title": "Genuine Content Writer Internship with Stipend",
+        "input": """Internship: Technical Content Writer at DevCommunity Media
+Stipend: ₹12,000/month (Fixed). Duration: 3 months.
+Role: Write 2 technical tutorials per week on Python and cloud architecture.
+Process: Submit 1 sample article -> 15 min editorial interview -> Offer.
+No registration charges or test fees. Apply via LinkedIn Easy Apply.""",
+        "format": "text",
+        "language": "en",
+        "true_verdict": "LIKELY_GENUINE",
+        "true_stage": 0,
+        "true_signals": ["GENUINE_SIGNALS"],
+        "notes": "Plausible technical writing internship."
+    },
+    {
+        "id": "TC054",
+        "title": "Genuine Big 4 Graduate Trainee Offer - Deloitte",
+        "input": """Deloitte Touche Tohmatsu India LLP
+Dear Ankit,
+We are pleased to extend this offer of employment for Analyst in Risk Advisory.
+Annual compensation: INR 6,50,000.
+Reporting office: Cyber City, Gurugram.
+Please sign the attached agreement and submit via the Deloitte SuccessFactors onboarding link sent to your registered email.
+Deloitte does not authorize any third party to collect money for recruitment.""",
+        "format": "offer_letter",
+        "language": "en",
+        "true_verdict": "LIKELY_GENUINE",
+        "true_stage": 0,
+        "true_signals": ["GENUINE_SIGNALS"],
+        "notes": "Official Big 4 employment offer."
+    },
+    {
+        "id": "TC055",
+        "title": "Genuine Punjabi IT Company Recruiter Chat",
+        "input": """ਐਚ ਆਰ ਮਨਪ੍ਰੀਤ: ਸਤਿ ਸ੍ਰੀ ਅਕਾਲ ਹਰਪ੍ਰੀਤ ਜੀ, ਅਸੀਂ ਮੋਹਾਲੀ ਵਿੱਚ ਰਿਐਕਟ ਡਿਵੈਲਪਰ ਲੱਭ ਰਹੇ ਹਾਂ।
+ਹਰਪ੍ਰੀਤ: ਜੀ ਮੈਂ 2 ਸਾਲ ਤੋਂ ਰਿਐਕਟ 'ਤੇ ਕੰਮ ਕਰ ਰਿਹਾ ਹਾਂ।
+ਐਚ ਆਰ ਮਨਪ੍ਰੀਤ: ਬਹੁਤ ਵਧੀਆ। ਤੁਸੀਂ ਆਪਣਾ ਰੈਜ਼ਿਊਮੇ careers@techsolutions.in 'ਤੇ ਈਮੇਲ ਕਰ ਦਿਓ, ਅਸੀਂ ਸੋਮਵਾਰ ਨੂੰ ਇੰਟਰਵਿਊ ਰੱਖਾਂਗੇ। ਕੋਈ ਫੀਸ ਨਹੀਂ ਹੈ।""",
+        "format": "whatsapp_export",
+        "language": "pa",
+        "true_verdict": "LIKELY_GENUINE",
+        "true_stage": 0,
+        "true_signals": ["GENUINE_SIGNALS"],
+        "notes": "Authentic IT recruitment conversation in Punjabi."
+    },
+
+    # ==================== TRICKY EDGE CASES (5 CASES) ====================
+    {
+        "id": "TC056",
+        "title": "Edge Case - Legitimate Security Deposit for High-End Camera Gear in Media Job",
+        "input": """CineShots Production Studio: Hi Tarun, you have been shortlisted for our freelance wildlife videographer contract.
+Studio: We will courier ₹4.5 Lakh worth Sony FX6 cinema camera and lenses to your home for the 3-week shoot.
+Studio: As per our standard equipment lease protocol, a refundable caution deposit of ₹15,000 or a bank guarantee is required against the equipment. This is held in an escrow account and refunded upon equipment return.
+Tarun: Can I inspect the equipment in person at your Andheri studio and provide bank guarantee?
+Studio: Yes absolutely, you can visit our registered studio in Andheri West, verify the equipment, and sign the notarized agreement.
+Official website: https://cineshotsproductions.in""",
+        "format": "text",
+        "language": "en",
+        "true_verdict": "SUSPICIOUS",
+        "true_stage": 0,
+        "true_signals": ["UPFRONT_DEPOSIT"],
+        "notes": "Tricky edge case: legitimate caution deposit for expensive gear with physical office and escrow, but raises deposit signal; best classified cautiously as Suspicious or Unsure."
+    },
+    {
+        "id": "TC057",
+        "title": "Edge Case - Genuine Gig Economy Platform Onboarding (Zomato/Swiggy Delivery Partner Bag & T-shirt Fee)",
+        "input": """Swiggy Delivery Partner Onboarding:
+Welcome to Swiggy Delivery Fleet!
+To receive your official Swiggy Delivery Bag and 2 T-shirts, an asset onboarding charge of ₹1,200 will be adjusted from your weekly delivery earnings over 4 weeks (₹300/week).
+No upfront cash deposit is required. You can start delivering immediately after KYC verification at the local delivery hub.
+Helpline: partner-support@swiggy.in""",
+        "format": "text",
+        "language": "en",
+        "true_verdict": "LIKELY_GENUINE",
+        "true_stage": 0,
+        "true_signals": ["GENUINE_SIGNALS"],
+        "notes": "Legitimate gig delivery bag fee deducted from future payouts rather than upfront demand."
+    },
+    {
+        "id": "TC058",
+        "title": "Edge Case - Polished Scam Message Using Professional Language and Fake Corporate Domain",
+        "input": """From: talent@hcl-careers-global.com
+Subject: Notice of Assessment for Associate Consultant Role
+Dear Candidate,
+We reviewed your credentials on LinkedIn and invite you to complete the Global Logic & Reasoning Assessment.
+Assessment Proctoring Charge: A non-negotiable proctoring software token fee of ₹1,850 is payable to our testing partner PearsonVUE-Desk via UPI before test link activation.
+Upon scoring 70%+, this fee is 100% reimbursed in your first month salary of ₹75,000.
+Regards,
+HCL Talent Acquisition Board""",
+        "format": "text",
+        "language": "en",
+        "true_verdict": "SCAM",
+        "true_stage": 2,
+        "true_signals": ["UPFRONT_DEPOSIT", "BRAND_IMPERSONATION"],
+        "notes": "Polished corporate facade with lookalike domain demanding proctoring fee."
+    },
+    {
+        "id": "TC059",
+        "title": "Edge Case - Very Short Ambiguous Message with Bare Minimum Context",
+        "input": """Hi, are you free tomorrow? Call me back when you get this.""",
+        "format": "text",
+        "language": "en",
+        "true_verdict": "UNSURE",
+        "true_stage": 0,
+        "true_signals": [],
+        "notes": "Insufficient signals to determine verdict; honest Unsure classification."
+    },
+    {
+        "id": "TC060",
+        "title": "Edge Case - Freelance Web Development Client Asking for Sample Code",
+        "input": """Client: Hi Dev, we need an e-commerce website built in Next.js and Tailwind.
+Client: Can you share your portfolio links and build a small 1-page sample landing page using our Figma design?
+Dev: Sure, here is my GitHub and past client projects. For the sample, I can create a demo on Vercel.
+Client: Great, if the demo matches our quality, the project budget is ₹80,000 for 3 weeks of work. No payment before milestones.""",
+        "format": "text",
+        "language": "en",
+        "true_verdict": "LIKELY_GENUINE",
+        "true_stage": 0,
+        "true_signals": ["GENUINE_SIGNALS"],
+        "notes": "Normal freelance contract negotiation without upfront fee demands."
+    }
+]
+
+out_path = Path("data/testset.json")
+with open(out_path, "w", encoding="utf-8") as f:
+    json.dump({"test_cases": test_cases, "total_count": len(test_cases)}, f, indent=2, ensure_ascii=False)
+
+print(f"Generated {len(test_cases)} test cases in data/testset.json")
