@@ -1,4 +1,25 @@
-# OfferGuard AI — Scam-Stage Radar & Forensic Protection Engine
+<p align="center">
+  <img src="frontend/public/logo.png" alt="OfferGuard AI Logo" width="110" />
+</p>
+
+<h1 align="center">OfferGuard AI</h1>
+
+<p align="center">
+  <strong>5-Stage Scam Progression Radar & Forensic Protection Engine</strong><br>
+  <em>Detecting task scams, predatory work-from-home fraud, and deceptive employment solicitations.</em>
+</p>
+
+<p align="center">
+  <a href="#tech-stack"><img src="https://img.shields.io/badge/React-19-61DAFB?style=for-the-badge&logo=react&logoColor=black" alt="React 19" /></a>
+  <a href="#tech-stack"><img src="https://img.shields.io/badge/Vite-5-646CFF?style=for-the-badge&logo=vite&logoColor=white" alt="Vite 5" /></a>
+  <a href="#tech-stack"><img src="https://img.shields.io/badge/FastAPI-0.100+-009688?style=for-the-badge&logo=fastapi&logoColor=white" alt="FastAPI" /></a>
+  <a href="#tech-stack"><img src="https://img.shields.io/badge/Python-3.10+-3776AB?style=for-the-badge&logo=python&logoColor=white" alt="Python 3.10+" /></a>
+  <a href="#benchmarking--evaluation"><img src="https://img.shields.io/badge/Accuracy-98.57%25-brightgreen?style=for-the-badge" alt="Accuracy" /></a>
+  <a href="#victim-protection--helpline-1930-legal-dossier"><img src="https://img.shields.io/badge/Helpline-1930%20(India)-E53E3E?style=for-the-badge" alt="Helpline 1930" /></a>
+  <a href="#license"><img src="https://img.shields.io/badge/License-MIT-blue?style=for-the-badge" alt="License MIT" /></a>
+</p>
+
+---
 
 OfferGuard AI is a full-stack, mobile-first forensic intelligence application designed to combat task scams, predatory work-from-home fraud, and deceptive employment solicitations. Unlike conventional security filters that inspect isolated messages out of context, OfferGuard AI reconstructs and evaluates entire multi-turn conversations across WhatsApp, Telegram, SMS, and PDF appointment letters.
 
@@ -16,14 +37,12 @@ The system features a **5-stage monotonic scam progression radar** mapped direct
   - [Victim Protection & Helpline 1930 Legal Dossier](#victim-protection--helpline-1930-legal-dossier)
   - [Client-Side Privacy & In-Browser OCR](#client-side-privacy--in-browser-ocr)
 - [Project Structure](#project-structure)
-  - [Client (Frontend - React 19 + Vite + TailwindCSS)](#client-frontend---react-19--vite--tailwindcss)
+  - [Client (Frontend - React + Vite + Tailwind)](#client-frontend---react--vite--tailwind)
   - [Server (Backend - FastAPI + Python + SQLite)](#server-backend---fastapi--python--sqlite)
 - [Screenshot Overview](#screenshot-overview)
-  - [Forensic Analysis Dashboard](#forensic-analysis-dashboard)
-  - [5-Stage Scam Progression Radar](#5-stage-scam-progression-radar)
-  - [MCA Corporate Registry & Threat Audit](#mca-corporate-registry--threat-audit)
-  - [Helpline 1930 FIR Complaint Generator](#helpline-1930-fir-complaint-generator)
-  - [Evaluation & Benchmarking Dashboard](#evaluation--benchmarking-dashboard)
+  - [1. Real-Time Risk Triage & Verdict](#1-real-time-risk-triage--verdict)
+  - [2. 5-Stage Scam Progression Radar & Next-Move Forecaster](#2-5-stage-scam-progression-radar--next-move-forecaster)
+  - [3. One-Tap Helpline 1930 Cybercrime Police Dossier](#3-one-tap-helpline-1930-cybercrime-police-dossier)
 - [Tech Stack](#tech-stack)
 - [Getting Started](#getting-started)
   - [Clone Repository](#clone-repository)
@@ -50,59 +69,58 @@ The system features a **5-stage monotonic scam progression radar** mapped direct
 
 ### Conversation Intelligence & Multi-Turn Parsing
 
-- Multi-turn conversation parser supporting standard WhatsApp export timestamps (Android/iOS 12h/24h formats) and Telegram channel logs.
-- Automatic sender attribution (`Recruiter`, `Victim`, `System`) to map chronological psychological coercion.
-- Regex-powered Indian PII Redactor that scrubs phone numbers (`+91`), UPI VPA IDs (`name@bank`), Aadhaar cards (`XXXX-XXXX-XXXX`), PAN cards, and bank account numbers before any model inference.
-- High-throughput PDF offer letter parser powered by PyMuPDF (`fitz`) for scanning unstructured digital appointment letters.
-- Raw payload normalization with prompt injection defense that sandboxes untrusted chat logs.
+- **Multi-turn conversation parser**: Ingests chat export logs from WhatsApp (Android / iOS standard 12h/24h timestamps) and Telegram channels into structured message turns (`sender`, `timestamp`, `text`).
+- **Sender attribution**: Distinguishes between recruiter, candidate, and system notifications to map chronological coercion.
+- **Indian PII Redaction**: Scrubs sensitive personal identification data including phone numbers (`+91`), UPI VPA IDs (`user@bank`), Aadhaar cards (`XXXX-XXXX-XXXX`), PAN cards, and bank account numbers prior to LLM submission.
+- **High-throughput PDF extraction**: PyMuPDF (`fitz`) engine extracting structured text from digital appointment letters and employment contracts.
+- **Prompt injection defense**: Untrusted chat text is sandboxed and screened against prompt hijacking patterns.
 
 ### Multi-Layered Task Scam Classifier
 
-- Hybrid dual-engine scoring architecture blending 60% deterministic rule heuristics with 40% Large Language Model reasoning.
-- 18+ calibrated forensic signal detectors identifying prepaid tasks, combo orders, YouTube video liking tasks, crypto merchant transactions, and upfront security deposits.
-- Built-in compensation interval awareness: intelligently distinguishes legitimate annual salary packages (`₹5,00,000 - ₹7,00,000 a year`, `CTC`, `LPA`, `PF`, `Gratuity`) from daily cash baits (`₹5,000/day`).
-- Safety latch mechanism: high-confidence rule violations automatically elevate high-risk threats even if an LLM returns a soft score.
-- Categorical verdicts: `SCAM` (High Risk), `SUSPICIOUS` (Medium Risk), `LIKELY_GENUINE` (Low Risk), and `UNSURE`.
+- **Hybrid scoring architecture**: Blends deterministic rule heuristics (60%) with Groq Cloud LLM contextual reasoning (40%, `openai/gpt-oss-120b`).
+- **18+ Forensic signal detectors**: Identifies prepaid tasks, combo orders, YouTube video liking tasks, crypto merchant transactions, and upfront security deposits.
+- **Compensation interval awareness**: Intelligently distinguishes legitimate annual compensation packages (`₹5,00,000 - ₹7,00,000 a year`, `CTC`, `LPA`, `PF`, `Gratuity`) from daily cash baits (`₹5,000/day`).
+- **Safety latch mechanism**: High-confidence rule violations automatically elevate high-risk threats even if an LLM returns a soft score.
+- **Categorical verdicts**: `SCAM` (High Risk), `SUSPICIOUS` (Medium Risk), `LIKELY_GENUINE` (Low Risk), and `UNSURE`.
 
 ### Corporate Verification & Threat Intelligence
 
-- Local SQLite snapshot of India's Ministry of Corporate Affairs (MCA) ROC registry containing active corporate entities, CINs, and registered office addresses.
-- RapidFuzz token-sort algorithm for fuzzy company name resolution resilient to spelling mistakes and intentional deceptive spacing.
-- Brand impersonation and typosquatting auditor flagging recruiters operating from free webmail providers (`@gmail.com`, `@yahoo.com`, `@outlook.com`) while claiming Fortune 500 affiliation.
-- High-risk disposable TLD detector (`.top`, `.xyz`, `.club`, `.work`, `.vip`, `.cc`).
-- VirusTotal v3 URL threat intelligence integration: performs SHA-256 / Base64 URL scans against 70+ antivirus engines with graceful fallbacks.
+- **MCA corporate registry**: Local SQLite snapshot of active Indian companies containing Corporate Identification Numbers (CIN) and registered office addresses.
+- **RapidFuzz token-sort matching**: Fuzzy string resolution resilient to spelling mistakes, deceptive spacing, and abbreviations.
+- **Brand impersonation & typosquatting detection**: Automatically flags recruiters using free webmail (`@gmail.com`, `@yahoo.com`, `@outlook.com`) while claiming affiliation with verified enterprises.
+- **Disposable TLD audit**: Identifies suspicious top-level domains (`.top`, `.xyz`, `.club`, `.work`, `.vip`, `.cc`).
+- **VirusTotal v3 URL intelligence**: Scans embedded links across 70+ antivirus engines with automatic fallback when unconfigured.
 
 ### 5-Stage Monotonic Scam Progression Radar
 
-- State-machine tracking the 5-Stage Social Engineering Kill-Chain:
-  - **Stage 0 (Bait):** High-paying unsolicited job solicitations for simple, zero-skill tasks with no formal interview.
+- **State machine tracking**:
+  - **Stage 0 (Bait):** High-paying unsolicited job solicitations for simple tasks with zero formal interview.
   - **Stage 1 (Hook):** Channeling to Telegram, token payouts (`₹150 - ₹300`) to manufacture psychological trust.
   - **Stage 2 (Prepaid Trap):** Demands for initial deposits to access "high-commission VIP merchant tasks".
-  - **Stage 3 (Lock-In):** Withdrawal freezing; demanding 18% GST, "tax clearance", or "system error penalties" to release trapped funds.
-  - **Stage 4 (Exit Scam):** Group deletion, communication blackout, and secondary scams ("recovery specialists" demanding advance fees).
-- Monotonic state persistence prevents backward regression once predatory lock-in signals are detected.
-- Predictive Forecaster (`NextMoveCard`) detailing the scammer's next likely coercive tactic and providing immediate counter-actions.
+  - **Stage 3 (Lock-In):** Withdrawal freezing; demanding 18% GST, "tax clearance", or "system penalties" to release trapped funds.
+  - **Stage 4 (Exit Scam):** Group deletion, communication blackout, and secondary "recovery agent" extortion.
+- **Monotonic progression**: Prevents backward state regression once predatory lock-in signals are detected.
+- **Predictive Forecaster (`NextMoveCard`)**: Warns the victim of the scammer's subsequent coercive demand based on current stage context.
 
 ### Victim Protection & Helpline 1930 Legal Dossier
 
-- One-tap legal complaint generator tailored for India's **National Cyber Crime Reporting Portal** (`cybercrime.gov.in`) and **Helpline 1930**.
-- Automated extraction of financial artifacts: suspect UPI addresses, beneficiary account numbers, phone numbers, and lost sums.
-- Chronological incident narrative with evidence quotes formatted for immediate FIR filing.
-- Trilingual defense guidance providing actionable next steps in **English**, **Hindi (हिन्दी)**, and **Punjabi (ਪੰਜਾਬੀ)**.
-- Step-by-step bank freeze protocol instructing victims on triggering the Golden Hour inter-bank freeze mechanism.
+- **1930 Cybercrime complaint pack**: Automatically formats evidence into an official police complaint draft for India's **National Cyber Crime Reporting Portal** (`cybercrime.gov.in`) and **Helpline 1930**.
+- **Financial artifact extraction**: Automatically isolates suspect UPI handles, destination account numbers, phone numbers, and lost amounts.
+- **Trilingual defense guidance**: Delivers step-by-step guidance in **English**, **Hindi (हिन्दी)**, and **Punjabi (ਪੰਜਾਬੀ)**.
+- **Golden Hour protocol**: Guides victims on triggering immediate bank lien freezes to stop secondary fund laundering.
 
 ### Client-Side Privacy & In-Browser OCR
 
-- In-browser optical character recognition powered by **Tesseract.js WebAssembly (WASM)**.
-- $2\times$ canvas upscaling, grayscale transformation, and threshold contrast preprocessing for high-accuracy text extraction from screenshot evidence.
-- Zero server retention: image processing occurs entirely within the client's browser memory; raw image binaries are never uploaded or retained on disk.
-- Offline-first fallback: core rule heuristics and stage detection execute completely without internet connectivity or external API dependencies.
+- **In-browser OCR via Tesseract.js WebAssembly (WASM)**.
+- **$2\times$ Canvas preprocessing**: Contrast thresholding, grayscale transformation, and noise reduction executed locally.
+- **Zero server image retention**: Image binaries are processed entirely in browser memory and never uploaded to any remote server.
+- **100% Offline fallback**: Deterministic rule heuristics and MCA database lookups run fully offline without internet connectivity.
 
 ---
 
 ## Project Structure
 
-### Client (Frontend - React 19 + Vite + TailwindCSS)
+### Client (Frontend - React + Vite + Tailwind)
 
 ```bash
 frontend/
@@ -226,106 +244,33 @@ backend/
 
 ## Screenshot Overview
 
-### Forensic Analysis Dashboard
+### 1. Real-Time Risk Triage & Verdict
 
-The primary user interface accepts raw chat transcripts, pasted job offer emails, or screenshot evidence. It immediately evaluates financial risk, assigns a categorical verdict, and displays detected red flags.
+<p align="center">
+  <img src="docs/screenshots/screenshot1_verdict_gauge.png" alt="Verification Result & Risk Gauge" width="85%" />
+</p>
 
-```
-+-----------------------------------------------------------------------------------+
-|  [LOGO] OfferGuard AI          [Lang: EN | HI | PA]           [Theme: Dark/Light] |
-+-----------------------------------------------------------------------------------+
-|                                                                                   |
-|   +---------------------------------------------------------------------------+   |
-|   |  INPUT: Paste WhatsApp Chat / Job Offer / Upload Screenshot (WASM OCR)     |   |
-|   |  "Earn Rs 5,000 daily liking YouTube videos. Deposit Rs 1,000 for VIP..." |   |
-|   +---------------------------------------------------------------------------+   |
-|                                                                                   |
-|   +-----------------------------------+   +-----------------------------------+   |
-|   |   VERDICT: SCAM DETECTED          |   |       RISK GAUGE: 88 / 100        |   |
-|   |   Critical financial danger       |   |       [ High Risk Meter ]         |   |
-|   +-----------------------------------+   +-----------------------------------+   |
-|                                                                                   |
-+-----------------------------------------------------------------------------------+
-```
+*The core analysis modal displays an animated circular SVG Risk Gauge (0–100%), high-impact risk badges, plain-language actionable advice, and a direct Helpline 1930 emergency shortcut.*
 
 ---
 
-### 5-Stage Scam Progression Radar
+### 2. 5-Stage Scam Progression Radar & Next-Move Forecaster
 
-Visualizes the victim's position across the 5 stages of the scam script. For genuine offers, the radar remains at 0% with a clean "No Scam" indicator.
+<p align="center">
+  <img src="docs/screenshots/screenshot2_stage_radar.png" alt="5-Stage Scam Progression Radar" width="85%" />
+</p>
 
-```
-+-----------------------------------------------------------------------------------+
-|  SCAM PROGRESSION RADAR                                                           |
-|                                                                                   |
-|   [x] Stage 0        [x] Stage 1        [x] Stage 2        [ ] Stage 3   [ ] 4    |
-|   Bait Solicitation  Trust Hook         Prepaid Deposit    Lock-in Trap  Exit     |
-|   (Rs 5000/day)      (Rs 150 payout)    (Rs 1000 deposit)  (18% GST)     (Blocked)|
-|                                                                                   |
-|   NEXT MOVE PREDICTOR:                                                            |
-|   "The scammer will prompt you to complete a 'combo task' requiring a larger      |
-|    deposit (Rs 5,000 to Rs 15,000) before any withdrawal is approved."            |
-+-----------------------------------------------------------------------------------+
-```
+*Tracks the victim's position across the 5 stages of the scam script (Bait → Hook → Prepaid Trap → Lock-in → Exit Scam), paired with a predictive forecaster detailing the scammer's subsequent coercive tactic.*
 
 ---
 
-### MCA Corporate Registry & Threat Audit
+### 3. One-Tap Helpline 1930 Cybercrime Police Dossier
 
-Validates employer claims against the Ministry of Corporate Affairs snapshot and checks domain health via VirusTotal v3.
+<p align="center">
+  <img src="docs/screenshots/screenshot3_1930_fir_pack.png" alt="Helpline 1930 Cybercrime Police Dossier" width="85%" />
+</p>
 
-```
-+-----------------------------------------------------------------------------------+
-|  COMPANY & DOMAIN VERIFICATION                                                    |
-|                                                                                   |
-|  * MCA Status      : Matched "TATA CONSULTANCY SERVICES LIMITED"                  |
-|  * CIN             : L22210MH1995PLC084781 (Active)                               |
-|  * Recruiter Domain: hr-tcs-careers@gmail.com                                     |
-|  * Domain Risk     : SUSPICIOUS (Free webmail impersonating corporate brand)      |
-|  * VirusTotal Scan : Malicious (12 / 72 Antivirus vendors flagged phishing URL)   |
-+-----------------------------------------------------------------------------------+
-```
-
----
-
-### Helpline 1930 FIR Complaint Generator
-
-Generates a structured, evidence-backed legal report formatted specifically for cybercrime reporting.
-
-```
-+-----------------------------------------------------------------------------------+
-|  NATIONAL CYBERCRIME REPORTING PORTAL (1930) DOSSIER                              |
-|                                                                                   |
-|  INCIDENT SUMMARY:                                                                |
-|  Complainant was approached on WhatsApp offering work-from-home tasks.            |
-|  Induced into paying ₹1,000 for prepaid task commission via UPI.                  |
-|                                                                                   |
-|  FINANCIAL ARTIFACTS:                                                             |
-|  - Suspect UPI ID  : merchant.pay99@okhdfcbank                                    |
-|  - Suspect Phone   : +91 98765 43210                                              |
-|  - Amount Defrauded: ₹1,000.00                                                    |
-|                                                                                   |
-|  [ Copy FIR Draft ]    [ Download PDF Dossier ]    [ Dial 1930 Helpline ]         |
-+-----------------------------------------------------------------------------------+
-```
-
----
-
-### Evaluation & Benchmarking Dashboard
-
-Interactive test runner executing the complete 70-case curated test suite with real-time pass/fail metrics.
-
-```
-+-----------------------------------------------------------------------------------+
-|  OFFERGUARD BENCHMARK EVALUATION SUITE                                            |
-|                                                                                   |
-|  * Total Test Cases    : 70                                                       |
-|  * Verdict Accuracy    : 98.57% (69 / 70 passed)                                  |
-|  * Stage Accuracy      : 98.57% (69 / 70 passed)                                  |
-|  * Precision (Scam)    : 98.2%                                                    |
-|  * False Positive Rate : 0.0% (Legitimate jobs preserved)                         |
-+-----------------------------------------------------------------------------------+
-```
+*Automatically extracts suspect UPI handles, destination account numbers, phone numbers, and chronological evidence quotes into a pre-formatted complaint draft ready for `cybercrime.gov.in` and Helpline 1930.*
 
 ---
 
@@ -342,7 +287,7 @@ Interactive test runner executing the complete 70-case curated test suite with r
   - **Fuzzy Search & Document Parsing**: RapidFuzz, PyMuPDF (`fitz`), tldextract
   - **Database**: SQLite3 (MCA Corporate Registry pre-indexed snapshot)
 - **AI & LLM Services**:
-  - **Groq Cloud**: Llama-3.3-70b-versatile / OpenAI-GPT-OSS-120B (ultra-low latency structured reasoning)
+  - **Groq Cloud**: OpenAI-GPT-OSS-120B / Llama 3.3 70B (ultra-low latency structured reasoning)
   - **Google Gemini**: Gemini 2.0 Flash (`google-genai` SDK)
 - **Security & Threat Intelligence**:
   - **VirusTotal v3 REST API**: Automated URL and domain reputation analysis
@@ -507,8 +452,9 @@ import sys, json
 from app.services.analyzer import analyze_case
 sys.stdout.reconfigure(encoding='utf-8')
 data = json.load(open('data/testset.json', encoding='utf-8'))
-passed = sum(1 for c in data if analyze_case(c['text']).verdict == c['expected_verdict'])
-print(f'Evaluation Passed: {passed}/{len(data)} ({passed/len(data)*100:.2f}%)')
+cases = data.get('test_cases', data)
+passed = sum(1 for c in cases if analyze_case(c.get('input', c.get('text', ''))).verdict == (c.get('true_verdict') or c.get('expected_verdict')))
+print(f'Evaluation Passed: {passed}/{len(cases)} ({passed/len(cases)*100:.2f}%)')
 "
 ```
 
@@ -567,7 +513,7 @@ In accordance with hackathon ethics and transparency standards (CT BuildFest 2.0
 - **AI-Assisted Pair Programming**: Google Antigravity IDE and Gemini were used for backend microservice scaffolding (FastAPI), Pydantic schema validation, and modular decoupling of the 5 standalone engines.
 - **Test Dataset Curation & Augmentation**: AI was used to parse, sanitize, and synthesize 70 benchmark test cases reflecting real-world scam scripts documented across Reddit communities (`r/Scams`, `r/developersIndia`, `r/mumbai`, `r/recruitinghell`) and the EMSCAD dataset.
 - **Prompt Injection Defense**: AI assisted in designing sandboxed prompt framing so that user-submitted scam messages cannot poison or override system instructions.
-- **Human Oversight & Verification**: All AI-generated code, heuristic patterns, regex rules, and translations were reviewed, manually verified, and validated against our automated 70-case regression test suite.
+- **Human Oversight & Verification**: All AI-assisted code, heuristic patterns, regex rules, and translations were reviewed, manually verified, and validated against our automated 70-case regression test suite.
 
 ---
 
@@ -575,6 +521,3 @@ In accordance with hackathon ethics and transparency standards (CT BuildFest 2.0
 
 This project was built for **CT BuildFest 2.0 (Problem Statement CTBF-AI-11)**.  
 Licensed under the [MIT License](LICENSE).
-#   r r  
- #   o f f e r g u a r d - a i  
- 
